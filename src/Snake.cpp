@@ -15,10 +15,11 @@
 #include <stropts.h>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 using namespace std;
 
-const int width=30; /* Defines Mapsize in x-direction (horizontal) */
+const int width=60; /* Defines Mapsize in x-direction (horizontal) */
 const int height=10; /* Defines Mapsize in y-direction (vertikal) */
 int x=width/2; /* Snake Head position in x-direction */
 int y=height/2; /* Snake Head position in y-direction */
@@ -62,7 +63,7 @@ int main() {
 	buildMap(A,width,height,sbody);
 	start();
 	do {
-		system("clear");
+		system("tput reset");
 		snake(A,food,sbody);
 		touchFood();
 		if (getfood){
@@ -78,7 +79,7 @@ int main() {
 		dead();
 	}
 	while (running);
-	system("clear");
+	system("tput reset");
 	printMap(A);
 	cout << "You Lost! "<< endl;
 	cout << "Good Luck next Time :)"<< endl;
@@ -109,7 +110,7 @@ void buildSnake(){
 }
 
 void start(){
-	system("clear");
+	system("tput reset");
 	if (!running){ /* Start Command for User */
 		touchFood();
 		buildSnake();
@@ -125,7 +126,10 @@ void start(){
 void printMap(char A[][width]){
 	/* After everything is initialized, prints the whole Map with Snake and
 	 * food. */
-	cout << "                      Welcome to Snake" << endl;
+	string welcome = "Welcome to Snake";
+	int k=(width - (int) welcome.length())/2;
+	string _space  = string(k,' ');
+	cout << _space + welcome << endl;
 	for (int i=0;i<height;i++){
 		for (int a=0;a<width;a++){
 			cout << A[i][a];
@@ -170,6 +174,9 @@ void move(int dir[2]){
 				break;
 	case 'a' :	dir[0]=-1;
 				dir[1]=0;
+				break;
+	default: 	dir[0]=olddir[0];
+				dir[1]=olddir[1];
 				break;
 	}
 	if (olddir[0]+dir[0]==0 && olddir[1]+dir[1]==0){
@@ -276,10 +283,11 @@ bool checkFood(){
 }
 
 void showControl(){
-	cout << "			     w      " << endl;
-	cout << "			     |      " << endl;
-	cout << "			a <-- --> d " << endl;
-	cout << "			     |      " << endl;
-	cout << "			     s      " << endl;
+	string _space=string((int) width/2-5,' ');
+	cout << _space+"     w      " << endl;
+	cout << _space+"     |      " << endl;
+	cout << _space+"a <-- --> d " << endl;
+	cout << _space+"     |      " << endl;
+	cout << _space+"     s      " << endl;
 }
 
