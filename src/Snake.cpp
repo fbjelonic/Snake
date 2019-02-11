@@ -19,7 +19,7 @@
 
 using namespace std;
 
-const int width=60; /* Defines Mapsize in x-direction (horizontal) */
+const int width=30; /* Defines Mapsize in x-direction (horizontal) */
 const int height=10; /* Defines Mapsize in y-direction (vertikal) */
 int x=width/2; /* Snake Head position in x-direction */
 int y=height/2; /* Snake Head position in y-direction */
