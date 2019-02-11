@@ -40,6 +40,8 @@ bool getfood=true; /* New Food location initializer. */
 bool running=false; /* Game start and stop variable. */
 
 void buildMap(char A[][width],const int width,const int height,int sbody[][2]);
+void buildSnake();
+void start();
 void printMap(char A[][width]);
 void snake(char A[][width],int food,int sbody[][2]);
 void move(int dir[2]);
@@ -55,8 +57,10 @@ void showControl();
 int main() {
 	for (int i=0;i<food;i++){	/* Initializing of Snake Body (sbody) */
 		sbody[i][0]=width/2;
-		sbody[i][0]=height/2;
+		sbody[i][1]=height/2;
 	}
+	buildMap(A,width,height,sbody);
+	start();
 	do {
 		system("clear");
 		snake(A,food,sbody);
@@ -65,17 +69,8 @@ int main() {
 			makeFood();
 			getfood=false;
 		}
-		buildMap(A,width,height,sbody);
+		buildSnake();
 		printMap(A);
-		if (!running){ /* Start Command for User */
-			char k;
-			cout<< "Press any Key to start!" << endl;
-			showControl();
-			cin >> k;
-			system("clear");
-			printMap(A);
-			running=true;
-		}
 		cout << "Your Score: " << food-3 << endl;
 		cout << "Keep Rolling!" << endl;
 		cout << "Your Speed: " << (int) (400/milliseconds) << endl;
@@ -104,15 +99,27 @@ void buildMap(char A[][width],const int width,const int height,int sbody[][2]){
 			}
 		}
 	}
-
-	/* Build Food here */
-	A[b][a]='X';
-
+}
+void buildSnake(){
 	/* Build Snake here */
 	for (int i=0;i<food;i++){
 		A[sbody[i][1]][sbody[i][0]]='O';
 	}
 	A[0][0]='#';
+}
+
+void start(){
+	system("clear");
+	if (!running){ /* Start Command for User */
+		touchFood();
+		buildSnake();
+		printMap(A);
+		char k;
+		cout<< "Press any Key to start!" << endl;
+		showControl();
+		cin >> k;
+		running=true;
+	}
 }
 
 void printMap(char A[][width]){
@@ -133,6 +140,7 @@ void snake(char A[][width],int food, int sbody[][2]){
 	move(dir);
 	dx+=dir[0];
 	dy+=dir[1];
+	A[sbody[food-1][1]][sbody[food-1][0]]=' '; /* To erase old tail of Snake */
 	for (int i=food-1;i>0;i--){
 		sbody[i][0]=sbody[i-1][0];
 		sbody[i][1]=sbody[i-1][1];
@@ -207,11 +215,15 @@ void makeFood(){
 	/* this function is called, if the Food is eaten by the Snake
 	 * and a new peace should be generated at a random spot. */
 	srand(time(NULL));
+	A[b][a]=' '; /* Deletes old Food position */
 	do {
 		a=rand()%(width-4)+2;
 		b=rand()%(height-4)+2;
 	}
 	while (checkFood());
+	/* Build Food here */
+	A[b][a]='X';
+
 }
 
 void touchFood(){
