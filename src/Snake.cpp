@@ -190,7 +190,8 @@ void move(int dir[2]){
 
 int _kbhit() {
 	/* This function is similar to the kbhit() of conio.h library. This
-	 * is the equivalent for Linux Systems. */
+	 * is the equivalent for Linux Systems.
+	 * Reference: http://www.flipcode.com/archives/_kbhit_for_Linux.shtml*/
     static const int STDIN = 0;
     static bool initialized = false;
 
